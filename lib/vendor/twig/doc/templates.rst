@@ -450,9 +450,9 @@ even if you're not working with PHP you should feel comfortable with it.
 .. note::
 
     The operator precedence is as follows, with the lowest-precedence
-    operators listed first: ``or``, ``and``, ``==``, ``!=``, ``<``, ``>``,
-    ``>=``, ``<=``, ``in``, ``+``, ``-``, ``~``, ``*``, ``/``, ``%``, ``//``,
-    ``is``, ``..``, and ``**``.
+    operators listed first: ``&``, ``^``, ``|``, ``or``, ``and``, ``==``,
+    ``!=``, ``<``, ``>``, ``>=``, ``<=``, ``in``, ``..``, ``+``, ``-``, ``~``,
+    ``*``, ``/``, ``//``, ``%``, ``is``, and ``**``.
 
 Literals
 ~~~~~~~~
@@ -480,8 +480,8 @@ exist:
 * ``true`` / ``false``: ``true`` represents the true value, ``false``
   represents the false value.
 
-* ``none``: ``none`` represents no specific value (the equivalent of ``null`` in
-  PHP). This is the value returned when a variable does not exist.
+* ``null``: ``null`` represents no specific value. This is the value returned
+  when a variable does not exist. ``none`` is an alias for ``null``.
 
 Arrays and hashes can be nested:
 
@@ -613,6 +613,21 @@ categories:
 * ``.``, ``[]``: Gets an attribute of an object.
 
 * ``?:``: The PHP ternary operator: ``{{ foo ? 'yes' : 'no' }}``
+
+String Interpolation
+~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.5
+    String interpolation was added in Twig 1.5.
+
+String interpolation (`#{expression}`) allows any valid expression to appear
+within a string. The result of evaluating that expression is inserted into the
+string:
+
+.. code-block:: jinja
+
+    {{ "foo #{bar} baz" }}
+    {{ "foo #{1 + 2} baz" }}
 
 Whitespace Control
 ------------------

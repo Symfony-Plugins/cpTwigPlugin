@@ -67,16 +67,9 @@ class Twig_Tests_Node_SandboxedModuleTest extends Twig_Tests_Node_TestCase
 /* foo.twig */
 class __TwigTemplate_be925a7b06dda0dfdbd18a1509f7eb34 extends Twig_Template
 {
-    protected function doGetParent(array \$context)
-    {
-        return false;
-    }
-
     protected function doDisplay(array \$context, array \$blocks = array())
     {
         \$this->checkSecurity();
-        \$context = array_merge(\$this->env->getGlobals(), \$context);
-
         echo "foo";
     }
 
@@ -93,10 +86,6 @@ class __TwigTemplate_be925a7b06dda0dfdbd18a1509f7eb34 extends Twig_Template
         return "foo.twig";
     }
 
-    public function isTraitable()
-    {
-        return true;
-    }
 }
 EOF
         , $twig);
@@ -124,8 +113,6 @@ class __TwigTemplate_be925a7b06dda0dfdbd18a1509f7eb34 extends Twig_Template
 
     protected function doDisplay(array \$context, array \$blocks = array())
     {
-        \$context = array_merge(\$this->env->getGlobals(), \$context);
-
         \$this->getParent(\$context)->display(\$context, array_merge(\$this->blocks, \$blocks));
     }
 

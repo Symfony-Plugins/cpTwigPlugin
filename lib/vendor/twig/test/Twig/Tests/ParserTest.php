@@ -16,7 +16,23 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
     public function testSetMacroThrowsExceptionOnReservedMethods()
     {
         $parser = new Twig_Parser(new Twig_Environment());
-        $parser->setMacro('display', $this->getMock('Twig_Node_Macro', null, array(), '', null));
+        $parser->setMacro('display', $this->getMock('Twig_Node_Macro', array(), array(), '', null));
+    }
+
+    /**
+     * @expectedException        Twig_Error_Syntax
+     * @expectedExceptionMessage Unknown tag name "foo". Did you mean "for" at line 0
+     */
+    public function testUnkownTag()
+    {
+        $stream = new Twig_TokenStream(array(
+            new Twig_Token(Twig_Token::BLOCK_START_TYPE, '', 0),
+            new Twig_Token(Twig_Token::NAME_TYPE, 'foo', 0),
+            new Twig_Token(Twig_Token::BLOCK_END_TYPE, '', 0),
+            new Twig_Token(Twig_Token::EOF_TYPE, '', 0),
+        ));
+        $parser = new Twig_Parser(new Twig_Environment());
+        $parser->parse($stream);
     }
 
     /**
@@ -64,6 +80,16 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
             array(new Twig_Node_Text('foo', 0)),
             array(new Twig_Node(array(new Twig_Node(array(new Twig_Node_Text('foo', 0)))))),
         );
+    }
+
+    /**
+     * @expectedException Twig_Error_Syntax
+     * @expectedExceptionMessage A template that extends another one cannot have a body but a byte order mark (BOM) has been detected; it must be removed at line 0.
+     */
+    public function testFilterBodyNodesWithBOM()
+    {
+        $parser = $this->getParserForFilterBodyNodes();
+        $parser->filterBodyNodes(new Twig_Node_Text(chr(0xEF).chr(0xBB).chr(0xBF), 0));
     }
 
     protected function getParserForFilterBodyNodes()
